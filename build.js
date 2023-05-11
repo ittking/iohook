@@ -137,9 +137,9 @@ function build(runtime, version, abi) {
       '--arch=' + arch,
     ];
 
-    if (/^electron/i.test(runtime)) {
-      args.push('--dist-url=https://nodejs.org/dist');
-    }
+    // if (/^electron/i.test(runtime)) {
+    //   args.push('--dist-url=https://nodejs.org/dist');
+    // }
 
     if (parseInt(abi) >= 80) {
       if (arch === 'x64') {
@@ -187,37 +187,6 @@ function build(runtime, version, abi) {
       resolve();
     });
   });
-}
-
-function tarGz() {
-  const FILES_TO_ARCHIVE = {
-    win32: ['build/Release/iohook.node', 'build/Release/uiohook.dll'],
-    linux: ['build/Release/iohook.node', 'build/Release/uiohook.so'],
-    darwin: ['build/Release/iohook.node', 'build/Release/uiohook.dylib'],
-  };
-  const tarPath =
-    'prebuilds/iohook@' +
-    pkg.version +
-    '-' +
-    process.platform +
-    '-' +
-    arch +
-    '.tar.gz';
-
-  files.push(tarPath);
-
-  if (!fs.existsSync(path.dirname(tarPath))) {
-    fs.mkdirSync(path.dirname(tarPath));
-  }
-
-  tar.c(
-    {
-      gzip: true,
-      file: tarPath,
-      sync: true,
-    },
-    FILES_TO_ARCHIVE[process.platform]
-  );
 }
 
 function uploadFiles(files) {
