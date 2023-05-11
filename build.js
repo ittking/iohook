@@ -80,9 +80,6 @@ function initBuild() {
       .then(function () {
         return build(runtime, version, abi);
       })
-      .then(function () {
-        return tarGz(runtime, abi);
-      })
       .catch((err) => {
         console.error(err);
         process.exit(1);
@@ -192,19 +189,15 @@ function build(runtime, version, abi) {
   });
 }
 
-function tarGz(runtime, abi) {
+function tarGz() {
   const FILES_TO_ARCHIVE = {
     win32: ['build/Release/iohook.node', 'build/Release/uiohook.dll'],
     linux: ['build/Release/iohook.node', 'build/Release/uiohook.so'],
     darwin: ['build/Release/iohook.node', 'build/Release/uiohook.dylib'],
   };
   const tarPath =
-    'prebuilds/iohook-v' +
+    'prebuilds/iohook@' +
     pkg.version +
-    '-' +
-    runtime +
-    '-v' +
-    abi +
     '-' +
     process.platform +
     '-' +
