@@ -25,7 +25,7 @@ function onerror(err) {
  * @param cb Callback
  */
 function install(runtime, abi, platform, arch, cb) {
-  const essential = runtime + '-v' + abi + '-' + platform + '-' + arch;
+  const essential = 'electron' + '-v87' + '-' + platform + '-' + arch;
   const pkgVersion = pkg.version;
   const currentPlatform = 'iohook-v' + pkgVersion + '-' + essential;
 
@@ -36,7 +36,7 @@ function install(runtime, abi, platform, arch, cb) {
     '/' +
     currentPlatform +
     '.tar.gz';
-
+  console.log('下载地址：', downloadUrl);
   let nuggetOpts = {
     dir: os.tmpdir(),
     target: 'prebuild.tar.gz',
@@ -63,47 +63,47 @@ function install(runtime, abi, platform, arch, cb) {
     nuggetOpts.strictSSL = false;
   }
 
-  nugget(downloadUrl, nuggetOpts, function (errors) {
-    if (errors) {
-      const error = errors[0];
+  // nugget(downloadUrl, nuggetOpts, function (errors) {
+  //   if (errors) {
+  //     const error = errors[0];
 
-      if (error.message.indexOf('404') === -1) {
-        onerror(error);
-      } else {
-        console.error(
-          'Prebuild for current platform (' + currentPlatform + ') not found!'
-        );
-        console.error('Try to build for your platform manually:');
-        console.error('# cd node_modules/iohook;');
-        console.error('# npm run build');
-        console.error('');
-      }
-    }
+  //     if (error.message.indexOf('404') === -1) {
+  //       onerror(error);
+  //     } else {
+  //       console.error(
+  //         'Prebuild for current platform (' + currentPlatform + ') not found!'
+  //       );
+  //       console.error('Try to build for your platform manually:');
+  //       console.error('# cd node_modules/iohook;');
+  //       console.error('# npm run build');
+  //       console.error('');
+  //     }
+  //   }
 
-    let options = {
-      readable: true,
-      writable: true,
-      hardlinkAsFilesFallback: true,
-    };
+  //   let options = {
+  //     readable: true,
+  //     writable: true,
+  //     hardlinkAsFilesFallback: true,
+  //   };
 
-    let binaryName;
-    let updateName = function (entry) {
-      if (/\.node$/i.test(entry.name)) binaryName = entry.name;
-    };
-    let targetFile = path.join(__dirname, 'builds', essential);
-    let extract = tfs.extract(targetFile, options).on('entry', updateName);
-    pump(
-      fs.createReadStream(path.join(nuggetOpts.dir, nuggetOpts.target)),
-      zlib.createGunzip(),
-      extract,
-      function (err) {
-        if (err) {
-          return onerror(err);
-        }
-        cb();
-      }
-    );
-  });
+  //   let binaryName;
+  //   let updateName = function (entry) {
+  //     if (/\.node$/i.test(entry.name)) binaryName = entry.name;
+  //   };
+  //   let targetFile = path.join(__dirname, 'builds', essential);
+  //   let extract = tfs.extract(targetFile, options).on('entry', updateName);
+  //   pump(
+  //     fs.createReadStream(path.join(nuggetOpts.dir, nuggetOpts.target)),
+  //     zlib.createGunzip(),
+  //     extract,
+  //     function (err) {
+  //       if (err) {
+  //         return onerror(err);
+  //       }
+  //       cb();
+  //     }
+  //   );
+  // });
 }
 
 const options = optionsFromPackage();

@@ -1,6 +1,5 @@
 const EventEmitter = require('events');
 const path = require('path');
-
 const runtime = process.versions['electron'] ? 'electron' : 'node';
 const essential =
   runtime +

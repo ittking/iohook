@@ -16,7 +16,7 @@
   "types": "index.d.ts",
   "scripts": {
     "install": "node install.js",
-    "build": "node build.js --upload=false",
+    "build": "node build.js --upload=false --runtime electron --version 16.0.0 --abi 93",
     "build:ci": "node build.js --all",
     "build:print": "node -e 'require(\"./helpers\").printManualBuildParams()'",
     "test": "jest",
@@ -181,4 +181,3 @@
     ]
   ]
 }
-
